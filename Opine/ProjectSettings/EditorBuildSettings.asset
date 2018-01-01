@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/S_Login.unity
+    guid: 06c9ddaca723f5f429b170b9145090ad
+  - enabled: 1
+    path: Assets/Scenes/S_FetchData.unity
+    guid: 7b1fcea803fad674db1e378b309153c8
+  - enabled: 1
+    path: Assets/Scenes/S_YayOrNay.unity
+    guid: ee20175ff986e5b4eb449d6e515ebeec
+  - enabled: 1
+    path: Assets/Scenes/S_YayOrNay_Results.unity
+    guid: fa7fdc8527fe5344d8fde1b7823e21e1
+  - enabled: 1
+    path: Assets/Scenes/S_TopDog.unity
+    guid: 432c5442bc1d35c49abdaa502eacc25f
+  - enabled: 1
+    path: Assets/Scenes/S_TopDog_Results.unity
+    guid: 9e00dc8dd33d6d148abb30f7fdabd6fb
+  - enabled: 1
+    path: Assets/Scenes/S_PeckingOrder.unity
+    guid: 36c3b0869bbc7b141ad05f99363f5278
+  - enabled: 1
+    path: Assets/Scenes/S_PeckingOrder_Results.unity
+    guid: ecc6b6a38e39fd540b842dbedc2b9582
+  - enabled: 1
+    path: Assets/Scenes/S_PinpointOpinion.unity
+    guid: a3c99025db446bb46b188d1742544b76
+  - enabled: 1
+    path: Assets/Scenes/S_PinpointOpinion_Results.unity
+    guid: 94f6920ef6e57004a83b9c4f6582986a
+  - enabled: 1
+    path: Assets/Scenes/S_VotingTime.unity
+    guid: b1681bed38bf2904aa761183313064d1
+  - enabled: 1
+    path: Assets/Scenes/S_EndGame.unity
+    guid: 13bff4c147e718446b072644450f656a

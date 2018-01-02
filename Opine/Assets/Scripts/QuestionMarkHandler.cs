@@ -24,6 +24,7 @@ public class QuestionMarkHandler : MonoBehaviour {
     private Transform CreateQuestionMark()
     {
         int ran = Random.Range(0, 4); // does not include 4 
+        print("Ran: " + ran);
         float iX = 0f;
         float iY = 0f;
         Vector3 dir = Vector3.zero;
@@ -55,7 +56,7 @@ public class QuestionMarkHandler : MonoBehaviour {
                 break;
         }
 
-        //print("Moving to " + iX + " " + iY);
+        print("Moving to " + iX + " " + iY);
         Vector3 loc = new Vector3(iX, iY, transform.position.z);
 
         float newZ = Random.Range(0f, 360f);

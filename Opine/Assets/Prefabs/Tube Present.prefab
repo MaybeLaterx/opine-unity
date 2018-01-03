@@ -66,6 +66,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 565e7291dd2b8d341855619f40f54976, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  h: 0
   rating: 0
   holdAtStartingValue: 1
   percentPrefab: {fileID: 224696654918657382, guid: 39666ba863d0a524a9cd7d2277dbceb8,
@@ -85,6 +86,9 @@ MonoBehaviour:
   alignmentX: 0
   alignmentY: 0
   alignmentZ: 0
+  scaleX: 0
+  scaleY: 0
+  scaleZ: 0
 --- !u!212 &212696275020037440
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -124,7 +128,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
-  m_Size: {x: 3, y: 10}
+  m_Size: {x: 3, y: 8.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

@@ -71,7 +71,7 @@ TextMesh:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1168734047386524}
-  m_Text: NO % ASSIGNED
+  m_Text: X%
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
@@ -99,6 +99,9 @@ MonoBehaviour:
   alignmentX: 0
   alignmentY: 0
   alignmentZ: 0
+  scaleX: 0
+  scaleY: 0
+  scaleZ: 0
 --- !u!222 &222378406443737866
 CanvasRenderer:
   m_ObjectHideFlags: 1

@@ -9,18 +9,11 @@ public class QuestionMarkScript : MonoBehaviour {
     public float boxWidth;
     public Vector3 dir;
 
-    float buffer = 0.2f;
-
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
     }
 
-    // Use this for initialization
-    void Start () {
-        boxHeight += buffer;
-        boxWidth += buffer;  
-	}
 	
 	// Update is called once per frame
 	void Update () {

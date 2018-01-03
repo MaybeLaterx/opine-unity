@@ -40,7 +40,8 @@ public class GraphSelect : MonoBehaviour {
         // topic card
         cardInst = Instantiate(cardPrefab, transform.position, Quaternion.identity);
         cardInst.GetComponent<LockCoordsOffset>().anchor = gameObject.transform;
-        cardInst.GetComponent<LockCoordsOffset>().offsetY = 12f;
+        cardInst.GetComponent<LockCoordsOffset>().offsetX = -6.85f;//0f;
+        cardInst.GetComponent<LockCoordsOffset>().offsetY = 5.25f;//12f;
         cardInst.GetComponent<LockCoordsOffset>().offsetZ = 1.5f;
         GameObject cardObj = cardInst.gameObject; 
 

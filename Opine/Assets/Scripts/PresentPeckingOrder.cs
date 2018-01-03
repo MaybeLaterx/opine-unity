@@ -30,8 +30,8 @@ public class PresentPeckingOrder : MonoBehaviour
     {
         round = 2;
         question = 0;
-        versus = FetchFullGameTopics.versus;
-
+        //versus = FetchFullGameTopics.versus;
+        versus = true; 
 
 
         string jsonString = FetchFullGameTopics.www.text;

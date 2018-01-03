@@ -24,7 +24,7 @@ public class QuestionMarkHandler : MonoBehaviour {
     private Transform CreateQuestionMark()
     {
         int ran = Random.Range(0, 4); // does not include 4 
-        print("Ran: " + ran);
+        //print("Ran: " + ran);
         float iX = 0f;
         float iY = 0f;
         Vector3 dir = Vector3.zero;
@@ -56,18 +56,21 @@ public class QuestionMarkHandler : MonoBehaviour {
                 break;
         }
 
-        print("Moving to " + iX + " " + iY);
-        Vector3 loc = new Vector3(iX, iY, transform.position.z);
+        //print("Moving to " + iX + " " + iY);
+        Vector3 loc = new Vector3(iX, iY, transform.position.z); 
 
         float newZ = Random.Range(0f, 360f);
         float rSpeed = Random.Range(-1f, 1f);
-        Transform inst = Instantiate(questionMarkPrefab, loc, Quaternion.Euler(0f, 0f, RandomAngle()));
+        float buffer = 0.2f;
+        //Transform inst = Instantiate(questionMarkPrefab, loc, Quaternion.Euler(0f, 0f, RandomAngle()));
+        Transform inst = Instantiate(questionMarkPrefab, loc, Quaternion.identity); 
 
         inst.GetComponent<QuestionMarkScript>().mSpeed = Random.Range(minSpeed, maxSpeed);
-        inst.GetComponent<QuestionMarkScript>().boxHeight = boxHeight;
-        inst.GetComponent<QuestionMarkScript>().boxWidth = boxWidth;
+        inst.GetComponent<QuestionMarkScript>().boxHeight = boxHeight + buffer;
+        inst.GetComponent<QuestionMarkScript>().boxWidth = boxWidth + buffer;
         inst.GetComponent<QuestionMarkScript>().dir = dir;
         inst.GetComponent<QuestionMarkScript>().rSpeed = rSpeed;
+        inst.GetComponent<RectTransform>().transform.position = loc; 
 
         StartCoroutine(WaitTime(waitTime));
 

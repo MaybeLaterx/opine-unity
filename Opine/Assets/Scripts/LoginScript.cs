@@ -22,7 +22,7 @@ public class LoginScript : MonoBehaviour {
         Debug.Log("Logging in as: " + username);
         print("Retrieving UUID from server (or creating one)");
 
-        string getUuidUrl = "http://192.168.1.111:3000/users/login"; 
+        string getUuidUrl = "http://104.131.63.157:3000/users/login"; 
         string jsonData = "{\"username\": \"" + username + "\"}"; 
         Hashtable headers = new Hashtable();
         headers.Add("Content-Type", "application/json");
@@ -36,6 +36,38 @@ public class LoginScript : MonoBehaviour {
         GlobalScript.uuid = uuid;
         //print(uuid + " DELETE THIS WARNING SOON"); 
 
+
+        GameObject title = GameObject.FindGameObjectWithTag("Title");
+        GameObject description = GameObject.FindGameObjectWithTag("Description");
+        GameObject inputField = GameObject.FindGameObjectWithTag("InputField"); 
+        title.GetComponent<Ease>().alignmentY = 14f;
+        description.GetComponent<Ease>().alignmentY = 13f;
+        inputField.GetComponent<Ease>().alignmentY = -300f;
+        StartCoroutine(LoadDelay(0.5f));
+    }
+
+    IEnumerator LoadDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay); 
         Application.LoadLevel(nextLevel); 
+    }
+
+    private void Start()
+    {
+
+    }
+
+    string[] Reshuffle(string[] texts)
+    {
+        // Knuth shuffle algorithm :: courtesy of Wikipedia :)
+        for (int t = 0; t < texts.Length; t++)
+        {
+            string tmp = texts[t];
+            int r = Random.Range(t, texts.Length);
+            texts[t] = texts[r];
+            texts[r] = tmp;
+        }
+
+        return texts;
     }
 }

@@ -69,7 +69,7 @@ MonoBehaviour:
   ratio: 0
   percentPrefab: {fileID: 224696654918657382, guid: 39666ba863d0a524a9cd7d2277dbceb8,
     type: 2}
-  bgPrefab: {fileID: 4062034143134254, guid: d275efa86ef93f749b8d324103823eef, type: 2}
+  bgPrefab: {fileID: 4425719639236178, guid: 74dce407e52e397489013a61bca6bd75, type: 2}
   cardPrefab: {fileID: 4486633448824822, guid: 7d9c651e4bad3b5418098d6872b34b0e, type: 2}
   textPrefab: {fileID: 224998401894202476, guid: 3d745c3ebaa63bc4cbacca2d44f3edd1,
     type: 2}
@@ -88,6 +88,9 @@ MonoBehaviour:
   alignmentX: 0
   alignmentY: 0
   alignmentZ: 0
+  scaleX: 0
+  scaleY: 0
+  scaleZ: 0
 --- !u!212 &212357551874632698
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -127,7 +130,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
-  m_Size: {x: 3, y: 10}
+  m_Size: {x: 2.5, y: 10}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

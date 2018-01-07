@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/S_PinpointOpinion_Results.unity
+- path: Assets/Scenes/S_PinpointOpinion.unity
   isLoaded: 1
   isActive: 1

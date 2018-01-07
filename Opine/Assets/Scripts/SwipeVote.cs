@@ -22,7 +22,7 @@ public class SwipeVote : MonoBehaviour {
         pivotBottom = new Vector3(pivot.x, -15f, pivot.z);
 
         controller = GameObject.FindGameObjectWithTag("GameController").transform;
-        lockedToMouse = false; 
+        lockedToMouse = false;
     }
 
     public void Yay()

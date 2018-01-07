@@ -564,6 +564,7 @@ MonoBehaviour:
   cross: {fileID: 21300000, guid: 9d27836bcedf51843b38251d2a02f671, type: 3}
   oneSprite: {fileID: 21300000, guid: f031f2458ef02ae4296184465a95d1b8, type: 3}
   twoSprite: {fileID: 21300000, guid: d823bef1f966b11428a330d3e446641f, type: 3}
+  unansweredSprite: {fileID: 21300000, guid: 24f38c9a40e5bbe498b60dddaf72d5b1, type: 3}
 --- !u!4 &1418283414
 Transform:
   m_ObjectHideFlags: 0
@@ -613,6 +614,7 @@ MonoBehaviour:
   scaleX: 0
   scaleY: 0
   scaleZ: 0
+  isUI: 0
 --- !u!212 &1512791465
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -708,6 +710,7 @@ MonoBehaviour:
   scaleX: 0
   scaleY: 0
   scaleZ: 0
+  isUI: 0
 --- !u!212 &1589772081
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -11,7 +11,7 @@ public class PresentYayOrNay : MonoBehaviour {
     public bool versus;
 
     public Transform cardPrefab, textPrefab, thumbPrefab, indicatorPrefab; //thumbPrefab is functionally identical to tickOrCross prefab 
-    public Sprite thumbsUp, thumbsDown, tick, cross;
+    public Sprite thumbsUp, thumbsDown, questionMark, tick, cross;
 
     public float cardEnterTime = 2f, myAnswerTime = 2f, opponentAnswerTime = 2f, realAnswerTime = 2f, tickOrCrossTime = 2f, moveTime = 2f, endTransitionTime = 2f; 
 
@@ -207,7 +207,16 @@ public class PresentYayOrNay : MonoBehaviour {
         float startY = (source == "real" ? 9f : -5.2f);
         Vector3 loc = new Vector3(startX, startY, -0.5f); 
         Transform thumb = Instantiate(thumbPrefab, loc, Quaternion.identity);
-        thumb.GetComponent<SpriteRenderer>().sprite = (answer == "yay" ? thumbsUp : thumbsDown);
+        Sprite thumbImage = questionMark;
+        if (answer == "yay")
+        {
+            thumbImage = thumbsUp;
+        }
+        else if (answer == "nay")
+        {
+            thumbImage = thumbsDown;
+        }
+        thumb.GetComponent<SpriteRenderer>().sprite = thumbImage;
         
         thumb.GetComponent<Ease>().alignmentX = newX;
         if (source == "real") thumb.GetComponent<Ease>().alignmentY = -2f;

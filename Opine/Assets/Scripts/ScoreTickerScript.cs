@@ -25,6 +25,7 @@ public class ScoreTickerScript : MonoBehaviour {
         {
             subtitle = "SCORE"; // this means the opponent display will be called score too, even though it's not on screen
         }
+        GetComponent<TextMesh>().text = subtitle + "\n" + currentScore.ToString();
     }
 	
 	// Update is called once per frame

@@ -9,6 +9,7 @@ public class GameHandlerPeckingOrder : MonoBehaviour {
 
     public string[] myTopics;
     JSONNode json;
+    bool timeUp = false; 
 
     public Transform card;
     public Transform oText; 
@@ -16,6 +17,7 @@ public class GameHandlerPeckingOrder : MonoBehaviour {
     int currentBatch; 
     bool readyForNext;
     bool waitingForData;
+    public Sprite[] colours; 
 
     public float gap = 1.5f;
     public Transform[] indicators;
@@ -33,6 +35,7 @@ public class GameHandlerPeckingOrder : MonoBehaviour {
         readyForNext = false; 
     }
 	
+
 	// Update is called once per frame
 	void Update () {
         if (waitingForData) // wait to return http request 
@@ -68,6 +71,52 @@ public class GameHandlerPeckingOrder : MonoBehaviour {
             readyForNext = false; 
         }
 	}
+
+    public void TimeUp()
+    {
+        //string[] compiledAnswers = new string[indicators.Length];
+        foreach (Transform indicator in indicators)
+        {
+
+            IndicatorColour cmp = indicator.GetComponent<IndicatorColour>();
+            if (indicator.GetComponent<IndicatorColour>().answered == false)
+            {
+                cmp.myAnswers = new string[] { "answer",
+                                        "submit",
+                                    "not",
+                                "did" };
+                cmp.answered = true;
+            }
+            //compiledAnswers[k] = cmp.myAnswers[0];
+        }
+
+        print("Pecking Order round complete! Saving answers");
+        string[,] compiledAnswers = new string[indicators.Length, 4];
+        for (int j = 0; j < indicators.Length; j++) // each question
+        {
+            for (int k = 0; k < 4; k++) // each answer
+            {
+
+                compiledAnswers[j, k] = indicators[j].GetComponent<IndicatorColour>().myAnswers[k];
+            }
+        }
+        FetchFullGameTopics.round3 = compiledAnswers;
+
+        //UpdateIndicators("unanswered"); // one is re-assigned unanswered again
+
+        // tell boxes to disappear
+        GameObject[] boxes = GameObject.FindGameObjectsWithTag("OrderBox");
+        foreach (GameObject box in boxes)
+        {
+            box.GetComponent<OrderBoxHeight>().endX *= -1; // same direction as a skip
+            box.GetComponent<OrderBoxHeight>().answerGiven = true;
+        }
+
+        // Prevent more cards from spawning
+        timeUp = true;
+
+        EndRound();
+    }
 
     public void MakeNextCards()
     {
@@ -154,28 +203,31 @@ public class GameHandlerPeckingOrder : MonoBehaviour {
 
     void CreateCards(int _round, int _batch)
     {
-        int _roundSize = GameObject.FindGameObjectsWithTag("Indicator").Length;
-        _batch %= _roundSize;
-        Transform indInst = indicators[_batch];
-        int _batchSize = indInst.GetComponent<IndicatorColour>().myAnswers.Length; 
-        print("Creating " + _batchSize + " cards"); 
-        for (int t = 0; t < _batchSize; t++)
+        if (!timeUp)
         {
-            Transform instCard;
-            Vector3 loc = new Vector3(0, 10f + (t * 0.5f), 0f - (t * 1f));
-            instCard = Instantiate(card, loc, Quaternion.identity) as Transform;
+            int _roundSize = GameObject.FindGameObjectsWithTag("Indicator").Length;
+            _batch %= _roundSize;
+            Transform indInst = indicators[_batch];
+            int _batchSize = indInst.GetComponent<IndicatorColour>().myAnswers.Length;
+            print("Creating " + _batchSize + " cards");
+            for (int t = 0; t < _batchSize; t++)
+            {
+                Transform instCard;
+                Vector3 loc = new Vector3(0, 10f + (t * 0.5f), 0f - (t * 1f));
+                instCard = Instantiate(card, loc, Quaternion.identity) as Transform;
 
-            string topic = indInst.GetComponent<IndicatorColour>().myAnswers[t];
-            Sprite colour = indInst.GetComponent<IndicatorColour>().colours[t];
-            //string topic = _json["data"][_round][_batch][t]["id"];
-            //instCard.GetComponentInChildren<TextMesh>().text = topic; 
-            Transform instText;
-            instText = Instantiate(oText, loc, Quaternion.identity) as Transform;
-            instText.GetComponent<LockCoords>().anchor = instCard;
-            instText.GetComponent<TextMesh>().text = topic;
-            instCard.GetComponent<OrderBoxHeight>().topic = topic;
-            instCard.GetComponent<SpriteRenderer>().sprite = colour;
-            print("Assigning topic " + topic + " to card " + t);
+                string topic = indInst.GetComponent<IndicatorColour>().myAnswers[t];
+                Sprite colour = indInst.GetComponent<IndicatorColour>().colours[t];
+                //string topic = _json["data"][_round][_batch][t]["id"];
+                //instCard.GetComponentInChildren<TextMesh>().text = topic; 
+                Transform instText;
+                instText = Instantiate(oText, loc, Quaternion.identity) as Transform;
+                instText.GetComponent<LockCoords>().anchor = instCard;
+                instText.GetComponent<TextMesh>().text = topic;
+                instCard.GetComponent<OrderBoxHeight>().topic = topic;
+                instCard.GetComponent<SpriteRenderer>().sprite = colour;
+                print("Assigning topic " + topic + " to card " + t);
+            }
         }
     }
 

@@ -16,11 +16,14 @@ public class GameHandlerYayOrNay : MonoBehaviour {
     int currentBatch;
     bool readyForNext;
     bool waitingForData;
+    bool timeUp; 
 
     public float gap = 1.5f;
     public Transform[] indicators;
     public Transform indicator;
     public int totalBatches;
+
+    public Transform timer; 
 
     GameObject title, description;
     GameObject[] buttons; 
@@ -30,6 +33,7 @@ public class GameHandlerYayOrNay : MonoBehaviour {
     {
         round = 0; // 0 indexed
         currentBatch = 0; // 0 indexed
+        timeUp = false; 
 
         // Parse data and prepare initial swiper creation
         string jsonString = FetchFullGameTopics.www.text;
@@ -55,6 +59,37 @@ public class GameHandlerYayOrNay : MonoBehaviour {
         }
     }
 
+    public void TimeUp()
+    {
+        string[] compiledAnswers = new string[indicators.Length];
+        int k = 0; 
+        foreach (Transform indicator in indicators)
+        {
+
+            IndicatorColour cmp = indicator.GetComponent<IndicatorColour>();
+            if (cmp.myAnswers[0] != "yay" && cmp.myAnswers[0] != "nay")
+            {
+                cmp.myAnswers = new string[] {"unanswered"};
+                cmp.answered = true; 
+            }
+            compiledAnswers[k] = cmp.myAnswers[0]; 
+            k++; 
+        }
+        FetchFullGameTopics.round1 = compiledAnswers;
+        UpdateIndicators("unanswered"); // one is re-assigned unanswered again
+
+        // tell swiper to disappear in appropriate direction
+        GameObject[] swipers = GameObject.FindGameObjectsWithTag("YayOrNayCard"); // MUST PASS REFERENCE INSTEAD
+        GameObject swiper = swipers[swipers.Length - 1];
+        swiper.GetComponent<SwipeScript>().pivot = swiper.GetComponent<SwipeScript>().pivotBottom;
+
+        // Prevent more cards from spawning
+        timeUp = true; 
+
+        EndRound();
+
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -73,7 +108,7 @@ public class GameHandlerYayOrNay : MonoBehaviour {
     private IEnumerator CreateSwiper(int _round, int _batch, float _secs)
     {
         yield return new WaitForSeconds(_secs);
-        CreateSwiper(_round, _batch);
+        if (!timeUp) CreateSwiper(_round, _batch);
     }
 
     void CreateSwiper(int round, int questionNum)
@@ -165,6 +200,7 @@ public class GameHandlerYayOrNay : MonoBehaviour {
 
         title.GetComponent<Ease>().alignmentX = 16f;
         description.GetComponent<Ease>().alignmentX = 16f;
+        timer.GetComponent<Ease>().alignmentX = 35f; 
 
         StartCoroutine(LoadLevelDelay(nextLevel, 0.75f)); 
     }

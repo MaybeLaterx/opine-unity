@@ -21,6 +21,7 @@ public class PresentPeckingOrder : MonoBehaviour
     public Transform indicatorPrefab; 
 
     public Sprite[] colourOrder;
+    public Sprite unansweredSprite; 
 
     public Sprite tick, cross; 
 
@@ -30,8 +31,8 @@ public class PresentPeckingOrder : MonoBehaviour
     {
         round = 2;
         question = 0;
-        //versus = FetchFullGameTopics.versus;
-        versus = true; 
+        versus = FetchFullGameTopics.versus;
+        //versus = true; 
 
 
         string jsonString = FetchFullGameTopics.www.text;
@@ -56,38 +57,46 @@ public class PresentPeckingOrder : MonoBehaviour
         for (int question = 0; question < batchSize; question++)
         {
             // Get data for this question
-            timeToWait = wholeQuestionTime * question; 
-            string[] realAnswers = new string[questionSize];
+            timeToWait = wholeQuestionTime * question;
+            string[] originalAnswersQuestion = new string[questionSize];
             float[] ratings = new float[questionSize];
-            Sprite[] realColours = new Sprite[questionSize];
+            //Sprite[] realColours = new Sprite[questionSize];
 
             for (int t = 0; t < questionSize; t++)
             {
-                realAnswers[t] = json["data"][round][question][t]["id"];
+                originalAnswersQuestion[t] = json["data"][round][question][t]["id"];
                 ratings[t] = json["data"][round][question][t]["rating"];
-                realColours[t] = colourOrder[t];
+                //realColours[t] = colourOrder[t];
             }
 
-            SortAnswers(ref realAnswers, ref realColours, ratings);
+            //SortAnswers(ref realAnswers, ref realColours, ratings);
+            SortAnswers(originalAnswersQuestion, ratings);
+            string[] realAnswers = SortAnswers(originalAnswersQuestion, ratings);
+            Sprite[] realColours = DetermineColours(originalAnswersQuestion, realAnswers);
 
             string[,] myAnswers = FetchFullGameTopics.round3;
-            Sprite[,] myColours = FetchFullGameTopics.round3Colours;
+            //Sprite[,] myColours = FetchFullGameTopics.round3Colours;
             string[] myAnswersQuestion = new string[questionSize];
-            Sprite[] myColoursQuestion = new Sprite[questionSize];
+            //Sprite[] myColoursQuestion = new Sprite[questionSize];
 
-            string[,] opponentAnswers = myAnswers;
-            Sprite[,] opponentColours = myColours;
-            string[] opponentAnswersQuestion = new string[questionSize];
-            Sprite[] opponentColoursQuestion = new Sprite[questionSize];
+            //string[,] opponentAnswers = original;
+            //Sprite[,] opponentColours = myColours;
+
+            string[] opponentAnswersQuestion = originalAnswersQuestion;
+            //Sprite[] opponentColoursQuestion = new Sprite[questionSize];
 
             for (int i = 0; i < questionSize; i++)
             {
                 //print("iteration: " + i); 
                 myAnswersQuestion[i] = myAnswers[question, i];
-                myColoursQuestion[i] = myColours[question, i];
-                opponentAnswersQuestion[i] = opponentAnswers[question, i];
-                opponentColoursQuestion[i] = opponentColours[question, i];
+                //myColoursQuestion[i] = DetermineColour(myAnswers, question, myAnswersQuestion[i]);
+                //opponentAnswersQuestion[i] = opponentAnswersQuestion[i];
+                //opponentColoursQuestion[i] = opponentColours[question, i];
             }
+            Sprite[] myColoursQuestion = DetermineColours(originalAnswersQuestion, myAnswersQuestion);
+            Sprite[] opponentColoursQuestion = DetermineColours(originalAnswersQuestion, opponentAnswersQuestion);
+
+            Reshuffle(ref opponentAnswersQuestion, ref opponentColoursQuestion);
 
             // Update indicator colours 
             // previous to green
@@ -101,7 +110,7 @@ public class PresentPeckingOrder : MonoBehaviour
             timeToWait += ownAnswerTime; 
             StartCoroutine(UpdateAnchors("MyAnswer", -10.5f, Mathf.Infinity, Mathf.Infinity, timeToWait));
             
-            // Move MyCards and create OpponentCards
+            // Create OpponentCards
             if (versus)
             {
                 StartCoroutine(CreateCards(opponentAnswersQuestion, opponentColoursQuestion, "OpponentAnswer", timeToWait));
@@ -116,13 +125,13 @@ public class PresentPeckingOrder : MonoBehaviour
                 timeToWait += realAnswerTime * 0.5f; 
 
                 // add tick/cross UI
-                bool myCorrect = (realAnswers[i] == myAnswers[question, i]);
+                bool myCorrect = (realAnswers[i] == myAnswersQuestion[i]);
                 //print("Correct: " + myCorrect + ", real: " + realAnswers[i] + ", me: " + myAnswers[question, i]);
                 StartCoroutine(MakeTickOrCross(myCorrect, i, false, timeToWait));
                 if (myCorrect) StartCoroutine(IncrementScore(false, 125, timeToWait));
                 if (versus)
                 {
-                    bool opponentCorrect = (realAnswers[i] == opponentAnswers[question, i]);
+                    bool opponentCorrect = (realAnswers[i] == opponentAnswersQuestion[i]);
                     //print("Correct: " + opponentCorrect + ", real: " + realAnswers[i] + ", opponent: " + opponentAnswers[question, i]);
                     StartCoroutine(MakeTickOrCross(opponentCorrect, i, true, timeToWait));
                     if (opponentCorrect) StartCoroutine(IncrementScore(true, 125, timeToWait));
@@ -153,6 +162,42 @@ public class PresentPeckingOrder : MonoBehaviour
 
         StartCoroutine(GoToNextScene(timeToWait));
     }
+
+    Sprite[] DetermineColours(string[] originalAnswers, string[] theseAnswers)
+    {
+        Sprite[] newCols = new Sprite[theseAnswers.Length];
+        for (int j = 0; j < theseAnswers.Length; j++)
+        {
+            newCols[j] = DetermineColour(originalAnswers, theseAnswers[j]);
+        }
+        return newCols; 
+    }
+
+    Sprite DetermineColour(string[] originalAnswers, string thisAnswer)
+    {
+        for (int i = 0; i < originalAnswers.Length; i++)
+        {
+            if (originalAnswers[i] == thisAnswer) return colourOrder[i];
+        }
+        print("Colour problem: No answer match");
+        return unansweredSprite;
+    }
+
+    void Reshuffle(ref string[] texts, ref Sprite[] sprites)
+    {
+        // Knuth shuffle algorithm :: courtesy of Wikipedia :)
+        for (int t = 0; t < texts.Length; t++)
+        {
+            string tmpT = texts[t];
+            Sprite tmpS = sprites[t];
+            int r = Random.Range(t, texts.Length);
+            texts[t] = texts[r];
+            texts[r] = tmpT;
+            sprites[t] = sprites[r];
+            sprites[r] = tmpS;
+        }
+    }
+
 
     IEnumerator IncrementScore(bool isOpponent, int increase, float delay)
     {
@@ -297,10 +342,10 @@ public class PresentPeckingOrder : MonoBehaviour
     }
 
 
-    void SortAnswers(ref string[] answers, ref Sprite[] colours, float[] ratings)
+    string[] SortAnswers(string[] answers, /*ref Sprite[] colours,*/ float[] ratings)
     {
         string[] newAnswers = new string[answers.Length];
-        Sprite[] newColours = new Sprite[colours.Length];
+        //Sprite[] newColours = new Sprite[colours.Length];
         for (int i = 0; i < answers.Length; i++)
         {
             float myRating = ratings[i];
@@ -315,10 +360,10 @@ public class PresentPeckingOrder : MonoBehaviour
                 
             }
             newAnswers[numAbove] = answers[i];
-            newColours[numAbove] = colours[i]; 
+            //newColours[numAbove] = colours[i]; 
         }
-        answers = newAnswers;
-        colours = newColours; 
+        return newAnswers;
+        //colours = newColours; 
         // purple, red, blue, greem
     }
 

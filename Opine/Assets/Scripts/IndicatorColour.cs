@@ -10,11 +10,12 @@ public class IndicatorColour : MonoBehaviour {
     public string[] myAnswers;
     public string[] opponentAnswers;
     public string[] realAnswers; 
-    public Sprite[] colours = new Sprite[4]; 
+    public Sprite[] colours = new Sprite[4];
 
     public Sprite answeredSprite;
     public Sprite currentSprite;
     public Sprite unansweredSprite;
+    public Sprite timeUpSprite; 
 
     public bool shouldUpdate;
 
@@ -31,6 +32,7 @@ public class IndicatorColour : MonoBehaviour {
 		if (shouldUpdate)
         {
             Sprite newSprite;
+            if (myAnswers == new string[] { "unanswered" }) newSprite = timeUpSprite;
             if (answered) newSprite = answeredSprite;
             else if (current) newSprite = currentSprite;
             else newSprite = unansweredSprite;

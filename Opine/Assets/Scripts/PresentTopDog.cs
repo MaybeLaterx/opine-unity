@@ -13,7 +13,7 @@ public class PresentTopDog : MonoBehaviour {
     public float cardEnterTime = 2f, myAnswerTime = 2f, opponentAnswerTime = 2f, realAnswerTime = 2f, tickOrCrossTime = 2f, moveTime = 2f, endTransitionTime = 2f;
     public Transform indicatorPrefab, cardPrefab, textPrefab, percentPrefab, tickOrCrossPrefab;
 
-    public Sprite sprite1, sprite2, tick, cross, oneSprite, twoSprite;
+    public Sprite sprite1, sprite2, tick, cross, oneSprite, twoSprite, unansweredSprite;
 
     Transform[] cards;
 
@@ -165,7 +165,11 @@ public class PresentTopDog : MonoBehaviour {
 
         Vector3 loc = new Vector3(startX, -5.2f, -0.5f);
         Transform thumb = Instantiate(tickOrCrossPrefab, loc, Quaternion.identity);
-        thumb.GetComponent<SpriteRenderer>().sprite = (answer == "1" ? oneSprite : twoSprite);
+        Sprite thumbSprite = unansweredSprite;
+        if (answer == "1") thumbSprite = oneSprite;
+        else if (answer == "2") thumbSprite = twoSprite;
+
+        thumb.GetComponent<SpriteRenderer>().sprite = thumbSprite;
 
         thumb.GetComponent<Ease>().alignmentX = newX;
         thumb.tag = newTag;

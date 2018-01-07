@@ -11,6 +11,7 @@ public class GameHandlerTopDog : MonoBehaviour {
     int round, question;
     bool readyForNext;
     JSONNode json;
+    bool timeUp = false; 
 
     int totalQuestions; 
 
@@ -19,7 +20,9 @@ public class GameHandlerTopDog : MonoBehaviour {
     private Transform controller; 
     Transform[] cards; 
 
-    public Sprite sprite1, sprite2; 
+    public Sprite sprite1, sprite2;
+
+    public Transform timer; 
 
     Transform[] indicators;
     GameObject title, description;
@@ -135,8 +138,8 @@ public class GameHandlerTopDog : MonoBehaviour {
 
     IEnumerator CreateCards(Transform cardPrefab, Transform textPrefab, string topic1, Sprite sprite1, string topic2, Sprite sprite2, float delay)
     {
-        yield return new WaitForSeconds(delay); 
-        cards = UtilitiesScript.CreateTopDogCards(cardPrefab, textPrefab, topic1, sprite1, topic2, sprite2);
+        yield return new WaitForSeconds(delay);
+        if (!timeUp) cards = UtilitiesScript.CreateTopDogCards(cardPrefab, textPrefab, topic1, sprite1, topic2, sprite2);
     }
 
     IEnumerator DeleteCards(float delay)
@@ -146,6 +149,36 @@ public class GameHandlerTopDog : MonoBehaviour {
         {
             Destroy(_card); 
         }
+    }
+
+    public void TimeUp()
+    {
+        string[] compiledAnswers = new string[indicators.Length];
+        int k = 0;
+        foreach (Transform indicator in indicators)
+        {
+
+            IndicatorColour cmp = indicator.GetComponent<IndicatorColour>();
+            if (cmp.myAnswers[0] != "1" && cmp.myAnswers[0] != "2")
+            {
+                cmp.myAnswers = new string[] { "unanswered" };
+                cmp.answered = true;
+            }
+            compiledAnswers[k] = cmp.myAnswers[0];
+            k++;
+        }
+        FetchFullGameTopics.round1 = compiledAnswers;
+        UpdateIndicators("unanswered"); // one is re-assigned unanswered again
+
+        // Move cards away
+        cards[0].GetComponent<Ease>().alignmentX = -12f;
+        cards[1].GetComponent<Ease>().alignmentX = 12.1f;
+        StartCoroutine(DeleteCards(0.5f));
+
+        // Prevent more cards from spawning
+        timeUp = true;
+
+        EndRound();
     }
 
     void EndRound()
@@ -162,6 +195,8 @@ public class GameHandlerTopDog : MonoBehaviour {
 
         title.GetComponent<Ease>().alignmentX = 16f;
         description.GetComponent<Ease>().alignmentX = 16f;
+
+        timer.GetComponent<Ease>().alignmentX = 35f; 
 
         StartCoroutine(LoadLevelDelay(nextLevel, 0.75f));
     }

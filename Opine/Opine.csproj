@@ -259,6 +259,9 @@
     <Reference Include="UnityEditor.iOS.Extensions">
       <HintPath>D:/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEditor.WebGL.Extensions">
+      <HintPath>D:/Unity/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.WindowsStandalone.Extensions">
       <HintPath>D:/Unity/Editor/Data/PlaybackEngines/windowsstandalonesupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
     </Reference>
@@ -305,6 +308,7 @@
     <Compile Include="Assets\Scripts\ConfirmYayOrNay.cs" />
     <Compile Include="Assets\Scripts\CreateQuestionMarks.cs" />
     <Compile Include="Assets\Scripts\Ease.cs" />
+    <Compile Include="Assets\Scripts\EndGameScript.cs" />
     <Compile Include="Assets\Scripts\FetchFullGameTopics.cs" />
     <Compile Include="Assets\Scripts\GameHandlerPeckingOrder.cs" />
     <Compile Include="Assets\Scripts\GameHandlerPinpointOpinion.cs" />
@@ -333,6 +337,7 @@
     <Compile Include="Assets\Scripts\SimpleJSON.cs" />
     <Compile Include="Assets\Scripts\SwipeScript.cs" />
     <Compile Include="Assets\Scripts\SwipeVote.cs" />
+    <Compile Include="Assets\Scripts\TimeScript.cs" />
     <Compile Include="Assets\Scripts\TopDogCard.cs" />
     <Compile Include="Assets\Scripts\UtilitiesScript.cs" />
   </ItemGroup>

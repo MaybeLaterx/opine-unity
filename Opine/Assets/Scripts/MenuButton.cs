@@ -17,6 +17,7 @@ public class MenuButton : MonoBehaviour {
     private void OnMouseUp()
     {
         scr.alignmentX = 12f;
+        StartCoroutine(LevelLoad(0.5f));
     }
 
     IEnumerator LevelLoad(float delay)

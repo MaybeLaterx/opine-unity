@@ -8,10 +8,10 @@ public class FetchFullGameTopics : MonoBehaviour
 {
     public string nextLevel;
 
-    public static bool versus; 
+    public static bool versus;
 
-    string postTopicsUrl = "http://192.168.1.111:3000/getTopicsAndAnswers";
-    string postOpinionsUrl = "http://192.168.1.111:3000/getVoteTopics"; 
+    string postTopicsUrl = "http://104.131.63.157:3000/getTopicsAndAnswers"; //"http://192.168.1.111:3000/getTopicsAndAnswers";
+    string postOpinionsUrl = "http://104.131.63.157:3000/getVoteTopics"; //"http://192.168.1.111:3000/getVoteTopics"; 
 
     public static JSONNode N;
     public static WWW www;
@@ -27,7 +27,7 @@ public class FetchFullGameTopics : MonoBehaviour
     public static string[] round1; // fake bool "yay" or "nay"
     public static string[] round2; // "1", "1", "2", "1"...
     public static string[,] round3; // ["a","b","c","d"],["f","e","g","h"]
-    public static Sprite[,] round3Colours; 
+    public static Sprite[,] round3Colours; // this needs to become obsolete
     public static string[] round4; // fake int "53"
 
     public static int myScore = 0, opponentScore = 0; 
@@ -57,7 +57,7 @@ public class FetchFullGameTopics : MonoBehaviour
     {
         print("Retrieving JSON topics for opinion voting");
 
-        string jsonData = "{\"uuid\": \"" + GlobalScript.uuid + "\", \"topicBlockLength\": 1, \"topicBlocks\": 4}"; //length should be 5
+        string jsonData = "{\"uuid\": \"" + GlobalScript.uuid + "\", \"topicBlockLength\": 3, \"topicBlocks\": 4}"; //length should be 5
         Hashtable headers = new Hashtable();
         headers.Add("Content-Type", "application/json");
         headers.Add("Cookie", "Our session cookie");
@@ -76,7 +76,7 @@ public class FetchFullGameTopics : MonoBehaviour
         
         print("Retrieving JSON topics for all games");
 
-        string jsonData = "{ \"rounds\": [{\"batches\":1,\"size\":1},{\"batches\":1,\"size\":2},{\"batches\":1,\"size\":4},{\"batches\":3,\"size\":1}]}";
+        string jsonData = "{ \"rounds\": [{\"batches\":3,\"size\":1},{\"batches\":1,\"size\":2},{\"batches\":1,\"size\":4},{\"batches\":1,\"size\":1}]}";
         //string jsonData = "{ \"rounds\": [{\"batches\":10,\"size\":1},{\"batches\":10,\"size\":2},{\"batches\":3,\"size\":4},{\"batches\":5,\"size\":1}]}";
         Hashtable headers = new Hashtable();
         headers.Add("Content-Type", "application/json");

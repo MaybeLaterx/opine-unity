@@ -7,7 +7,9 @@ public class QuestionMarkHandler : MonoBehaviour {
     public float boxHeight;
     public float boxWidth;
 
-    public float minSpeed, maxSpeed, waitTime; 
+    public float minSpeed, maxSpeed, waitTime;
+
+    public int startingQMarks; 
 
     public Transform questionMarkPrefab;
 
@@ -18,7 +20,48 @@ public class QuestionMarkHandler : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        CreateInitialQuestionMarks(startingQMarks); 
         CreateQuestionMark();
+    }
+
+    private Transform[] CreateInitialQuestionMarks(int quantity)
+    {
+        Transform[] insts = new Transform[quantity];
+        for (int i = 0; i < quantity; i++)
+        {
+            float iX = Random.Range(-boxWidth / 2, boxWidth / 2);
+            float iY = Random.Range(-boxHeight / 2, boxHeight / 2);
+            bool isXLocked = (Random.Range(0, 2) == 0);
+            int negation = (Random.Range(0, 2) == 0 ? -1 : 1);
+            Vector3 dir;
+            if (isXLocked)
+            {
+                dir = new Vector3(1f * negation, Random.Range(-1f, 1f), 0f);
+            }
+            else
+            {
+                dir = new Vector3(Random.Range(-1f, 1f), 1f * negation, 0f);
+            }
+
+            Vector3 loc = new Vector3(iX, iY, transform.position.z);
+
+            float rSpeed = Random.Range(-1f, 1f);
+            float buffer = 0.2f;
+            //Transform inst = Instantiate(questionMarkPrefab, loc, Quaternion.Euler(0f, 0f, RandomAngle()));
+            Transform inst = Instantiate(questionMarkPrefab, loc, Quaternion.identity);
+
+            inst.GetComponent<QuestionMarkScript>().mSpeed = Random.Range(minSpeed, maxSpeed);
+            inst.GetComponent<QuestionMarkScript>().boxHeight = boxHeight + buffer;
+            inst.GetComponent<QuestionMarkScript>().boxWidth = boxWidth + buffer;
+            inst.GetComponent<QuestionMarkScript>().dir = dir;
+            inst.GetComponent<QuestionMarkScript>().rSpeed = rSpeed;
+            inst.GetComponent<RectTransform>().transform.position = loc;
+
+            insts[i] = inst;
+
+        }
+        return insts; 
+
     }
 
     private Transform CreateQuestionMark()

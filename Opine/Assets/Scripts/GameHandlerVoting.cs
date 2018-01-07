@@ -10,10 +10,13 @@ public class GameHandlerVoting : MonoBehaviour {
     //public string[] myTopics;
     JSONNode json;
     int round, question, totalQuestions;
+    bool timeUp; 
 
     public Transform textPrefab, swiperPrefab, indicatorPrefab;
     Transform[] indicators;
     Transform instSwiper;
+
+    public Transform timer; 
 
     GameObject title, description;
     GameObject[] buttons; 
@@ -22,6 +25,7 @@ public class GameHandlerVoting : MonoBehaviour {
 	void Start () {
         round = FetchFullGameTopics.round++;
         question = 0;
+        timeUp = false; 
 
         // Parse data and prepare initial swiper creation
         string jsonString = FetchFullGameTopics.wwwV.text;
@@ -57,6 +61,7 @@ public class GameHandlerVoting : MonoBehaviour {
 
     void CreateSwiper(string topic)
     {
+        if (timeUp) return; 
         print("Creating swiper");
 
         Vector3 loc = new Vector3(0, 10f, 0f);
@@ -92,6 +97,71 @@ public class GameHandlerVoting : MonoBehaviour {
         print("Assigning topic " + topic + " to swiper");
         */
 
+    }
+
+    public void TimeUp()
+    {
+        //string[] compiledAnswers = new string[indicators.Length];
+        int k = 0;
+        int i = 0; 
+        JSONNode votesJson = JSON.Parse("{}");
+        votesJson["uuid"] = GlobalScript.uuid;
+        foreach (Transform indicator in indicators)
+        {
+            if (indicator.GetComponent<IndicatorColour>().answered) 
+            {
+                string thisAnswer = indicator.GetComponent<IndicatorColour>().myAnswers[0];
+                if (thisAnswer == "yay" || thisAnswer == "nay")
+                {
+                    votesJson["topics"][k]["id"] = json["data"]["topics"][round][i];
+                    votesJson["topics"][k]["vote"] = (thisAnswer == "yay");
+                    k++;
+                }
+                //compiledAnswers[k] = thisAnswer;
+                i++;
+            }
+            indicator.GetComponent<IndicatorColour>().answered = true;
+        }
+        print("Votes Json: " + votesJson);
+        StartCoroutine(SendVotesToServer(votesJson));
+        //UpdateIndicators("unanswered"); // one is re-assigned unanswered again
+
+        // tell swiper to disappear in appropriate direction
+        GameObject[] swipers = GameObject.FindGameObjectsWithTag("VotingCard"); 
+        GameObject swiper = swipers[swipers.Length - 1];
+        swiper.GetComponent<SwipeVote>().pivot = swiper.GetComponent<SwipeVote>().pivotBottom;
+
+        // Prevent more cards from spawning
+        timeUp = true;
+
+        EndRound();
+
+        /*
+         * // Load next scene 
+                print("Voting round complete! Saving answers");
+                //JSONNode votesJson = JSON.Parse("{\"uuid\" = \"12234567890\", \"topics\" = []}"); // is this an empty node? 
+                JSONNode votesJson = JSON.Parse("{}");
+                votesJson["uuid"] = GlobalScript.uuid; 
+
+                int validAnswers = 0; 
+                for (int j = 0; j < totalQuestions; j++) // each batch
+                {
+                    string thisAnswer = indicators[j].GetComponent<IndicatorColour>().myAnswers[0];
+                    if (thisAnswer == "yay" || thisAnswer == "nay")
+                    {
+                        print("A: " + json["data"]["topics"][round][j]);
+                        print("B: " + thisAnswer == "yay");
+                        votesJson["topics"][validAnswers]["id"] = json["data"]["topics"][round][j];
+                        votesJson["topics"][validAnswers]["vote"] = (thisAnswer == "yay"); 
+                        validAnswers++; 
+                    }
+
+                    //compiledColours[j, k] = indicators[j].GetComponent<IndicatorColour>().colours[k];
+                }
+                StartCoroutine(SendVotesToServer(votesJson));
+                EndRound(); 
+                return true;
+                */
     }
 
     public void Trigger(string boxType)
@@ -191,6 +261,8 @@ public class GameHandlerVoting : MonoBehaviour {
 
         title.GetComponent<Ease>().alignmentX = 16f;
         description.GetComponent<Ease>().alignmentX = 16f;
+        timer.GetComponent<Ease>().alignmentX = 32f; 
+
         StartCoroutine(LoadNextScene(1f)); 
     }
 

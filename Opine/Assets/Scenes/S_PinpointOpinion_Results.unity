@@ -149,6 +149,7 @@ MonoBehaviour:
   scaleX: 0
   scaleY: 0
   scaleZ: 0
+  isUI: 0
 --- !u!212 &183724767
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -402,6 +403,7 @@ MonoBehaviour:
   scaleX: 0
   scaleY: 0
   scaleZ: 0
+  isUI: 0
 --- !u!212 &330107374
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -636,6 +638,7 @@ MonoBehaviour:
   silverStar: {fileID: 21300000, guid: 8815643d1c0ee82469bb122fb534ea8d, type: 3}
   bronzeStar: {fileID: 21300000, guid: 4d0755ebbb203e94d89f7e30a57388e6, type: 3}
   cross: {fileID: 21300000, guid: 9e26ec65255261c42911bad709d6ca86, type: 3}
+  unanswered: {fileID: 21300000, guid: 24f38c9a40e5bbe498b60dddaf72d5b1, type: 3}
   myColour: {fileID: 21300000, guid: 73ebd6a2922cb0a4eb1b912998a7bb11, type: 3}
   opponentColour: {fileID: 21300000, guid: c12aeab2da079284b95daef03192477b, type: 3}
   realColour: {fileID: 21300000, guid: a8e9370c766336d4381b2637bb20e9d0, type: 3}

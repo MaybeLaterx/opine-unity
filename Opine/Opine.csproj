@@ -308,6 +308,7 @@
     <Compile Include="Assets\Scripts\ConfirmYayOrNay.cs" />
     <Compile Include="Assets\Scripts\CreateQuestionMarks.cs" />
     <Compile Include="Assets\Scripts\Ease.cs" />
+    <Compile Include="Assets\Scripts\EaseAlpha.cs" />
     <Compile Include="Assets\Scripts\EndGameScript.cs" />
     <Compile Include="Assets\Scripts\FetchFullGameTopics.cs" />
     <Compile Include="Assets\Scripts\GameHandlerPeckingOrder.cs" />
@@ -318,8 +319,6 @@
     <Compile Include="Assets\Scripts\GlobalScript.cs" />
     <Compile Include="Assets\Scripts\GraphPresent.cs" />
     <Compile Include="Assets\Scripts\GraphSelect.cs" />
-    <Compile Include="Assets\Scripts\HttpExample.cs" />
-    <Compile Include="Assets\Scripts\HttpGetExample.cs" />
     <Compile Include="Assets\Scripts\IndicatorColour.cs" />
     <Compile Include="Assets\Scripts\LockCoords.cs" />
     <Compile Include="Assets\Scripts\LockCoordsOffset.cs" />

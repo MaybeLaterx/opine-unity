@@ -5,8 +5,6 @@ using SimpleJSON;
 
 public class GameHandlerVoting : MonoBehaviour {
 
-    string postVotesUrl = "http://192.168.1.111:3000/submitVotes";
-
     //public string[] myTopics;
     JSONNode json;
     int round, question, totalQuestions;
@@ -16,7 +14,7 @@ public class GameHandlerVoting : MonoBehaviour {
     Transform[] indicators;
     Transform instSwiper;
 
-    public Transform timer; 
+    public Transform timer, cipy; 
 
     GameObject title, description;
     GameObject[] buttons; 
@@ -43,6 +41,7 @@ public class GameHandlerVoting : MonoBehaviour {
         description = GameObject.FindGameObjectWithTag("Description");
         title.GetComponent<Ease>().alignmentX = 0f;
         description.GetComponent<Ease>().alignmentX = 0f;
+        //cipy.GetComponent<Ease>().alignmentX = -6.11f; 
 
         // Transition buttons 
         buttons = GameObject.FindGameObjectsWithTag("BottomButton");
@@ -270,10 +269,11 @@ public class GameHandlerVoting : MonoBehaviour {
     {
         print("Sending JSON of votes on provided topics");
 
+        string postVotesUrl = GlobalScript.domain + "/submitVotes";
         string jsonData = vJson.ToString(); // does this work? 
         Hashtable headers = new Hashtable();
         headers.Add("Content-Type", "application/json");
-        headers.Add("Cookie", "Our session cookie");
+        headers.Add("accept-version", GlobalScript.apiVersion);
         byte[] pData = System.Text.Encoding.UTF8.GetBytes(jsonData.ToCharArray());
         WWW www = new WWW(postVotesUrl, pData, headers);
 

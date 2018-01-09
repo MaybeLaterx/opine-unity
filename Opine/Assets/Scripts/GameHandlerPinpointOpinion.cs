@@ -8,12 +8,14 @@ public class GameHandlerPinpointOpinion : MonoBehaviour {
     public string nextLevel; 
 
     int round, question, totalQuestions;
-    JSONNode json; 
+    JSONNode json;
+    bool timeUp = false; 
 
     Transform graph, controller;
     public Transform graphPrefab, indicatorPrefab; 
     Transform[] indicators;
 
+    public Transform timer; 
     GameObject title, description;
     GameObject[] buttons; 
 
@@ -57,8 +59,34 @@ public class GameHandlerPinpointOpinion : MonoBehaviour {
     }
 
     public void TimeUp()
-    {
+    { 
+        string[] compiledAnswers = new string[indicators.Length];
+        int k = 0;
+        foreach (Transform indicator in indicators)
+        {
 
+            IndicatorColour cmp = indicator.GetComponent<IndicatorColour>();
+            if (!cmp.answered) 
+            {
+                cmp.myAnswers = new string[] { "-1.01" };
+                cmp.answered = true;
+            }
+            compiledAnswers[k] = cmp.myAnswers[0];
+            k++;
+        }
+        FetchFullGameTopics.round4 = compiledAnswers;
+        //UpdateIndicators("unanswered"); // one is re-assigned unanswered again
+
+        // Move graph right
+        graph.GetComponent<Ease>().alignmentX = 22f;//12f;
+        Destroy(graph.gameObject, 0.5f);
+
+        // Prevent more cards from spawning
+        timeUp = true;
+
+        EndRound();
+
+        
     }
 
     void EndRound()
@@ -75,6 +103,8 @@ public class GameHandlerPinpointOpinion : MonoBehaviour {
 
         title.GetComponent<Ease>().alignmentX = 16f;
         description.GetComponent<Ease>().alignmentX = 16f;
+
+        timer.GetComponent<Ease>().alignmentX = 35f; 
 
         StartCoroutine(LoadLevelDelay(nextLevel, 0.75f));
     }
@@ -106,7 +136,7 @@ public class GameHandlerPinpointOpinion : MonoBehaviour {
     IEnumerator CreateGraph(Transform graphPrefab, string topic, string percentage, float delay)
     {
         yield return new WaitForSeconds(delay);
-        graph = UtilitiesScript.CreatePinpointOpinionGraph(graphPrefab, topic, percentage);
+        if (!timeUp) graph = UtilitiesScript.CreatePinpointOpinionGraph(graphPrefab, topic, percentage);
     }
 
     bool UpdateIndicators(bool isSkip)

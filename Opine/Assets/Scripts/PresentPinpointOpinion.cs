@@ -11,7 +11,7 @@ public class PresentPinpointOpinion : MonoBehaviour {
     public bool versus;
 
     public Transform cardPrefab, topicPrefab, starPrefab, indicatorPrefab, graphPrefab;
-    public Sprite platinumStar, goldStar, silverStar, bronzeStar, cross;
+    public Sprite platinumStar, goldStar, silverStar, bronzeStar, cross, unanswered;
     public Sprite myColour, opponentColour, realColour;
 
     public float enterTime = 2f, myAnswerTime = 2f, opponentAnswerTime = 2f, realAnswerTime = 2f, starTime = 2f, moveTime = 2f, endTransitionTime = 2f;
@@ -46,7 +46,7 @@ public class PresentPinpointOpinion : MonoBehaviour {
             timeToWait = wholeQuestionTime * question;
             string topic = json["data"][round][question][0]["id"];
             float realAnswer = (json["data"][round][question][0]["rating"]);
-            string myAnswerString = FetchFullGameTopics.round4[0]; // stored as array for sake of indicators, just take first entry --- WHAT? SHOULDN'T THIS BE [QUESTION]
+            string myAnswerString = FetchFullGameTopics.round4[0]; // stored as array for sake of indicators, just take first entry
             float myAnswer = float.Parse(myAnswerString);
             float opponentAnswer = Random.value;
 
@@ -182,6 +182,11 @@ public class PresentPinpointOpinion : MonoBehaviour {
 
     Sprite DetermineStar(float errorMargin, ref int scoreIncrease)
     {
+        if (errorMargin > 1f) // no answer given is -1.01
+        {
+            scoreIncrease = 0;
+            return unanswered;
+        }   
         if (errorMargin < 0.01f) // accounts for the fact that the realAnswer has not been rounded
         {
             scoreIncrease = 500;
@@ -204,7 +209,7 @@ public class PresentPinpointOpinion : MonoBehaviour {
         }
         else
         {
-            scoreIncrease = 0; 
+            scoreIncrease = 0;
             return cross;
         }
     }

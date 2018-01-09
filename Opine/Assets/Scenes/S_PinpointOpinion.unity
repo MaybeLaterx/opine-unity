@@ -938,3 +938,4 @@ MonoBehaviour:
     type: 2}
   indicatorPrefab: {fileID: 4255925178328740, guid: bd0bbb0a1923b07439cb397f0931d4a0,
     type: 2}
+  timer: {fileID: 1111112018}

@@ -13,7 +13,7 @@ public class LoginScript : MonoBehaviour {
 
     public void GetInput(string username)
     {
-        print("yo!");
+        //print("yo!");
         StartCoroutine(GetUuid(username));
         inputField.text = ""; 
     }
@@ -22,15 +22,16 @@ public class LoginScript : MonoBehaviour {
         Debug.Log("Logging in as: " + username);
         print("Retrieving UUID from server (or creating one)");
 
-        string getUuidUrl = "http://104.131.63.157:3000/users/login"; 
+        string getUuidUrl = GlobalScript.domain + "/users/login";
         string jsonData = "{\"username\": \"" + username + "\"}"; 
         Hashtable headers = new Hashtable();
         headers.Add("Content-Type", "application/json");
-        headers.Add("Cookie", "Our session cookie");
+        //headers.Add("accept-version", GlobalScript.apiVersion);
         byte[] pData = System.Text.Encoding.UTF8.GetBytes(jsonData.ToCharArray());
         WWW www = new WWW(getUuidUrl, pData, headers);
 
         yield return www;
+        print(www.text);
         JSONNode json = JSON.Parse(www.text);
         uuid = json["data"]["uuid"];
         GlobalScript.uuid = uuid;
@@ -39,10 +40,12 @@ public class LoginScript : MonoBehaviour {
 
         GameObject title = GameObject.FindGameObjectWithTag("Title");
         GameObject description = GameObject.FindGameObjectWithTag("Description");
-        GameObject inputField = GameObject.FindGameObjectWithTag("InputField"); 
+        GameObject inputField = GameObject.FindGameObjectWithTag("InputField");
+        GameObject Cipy = GameObject.FindGameObjectWithTag("Cipy");
         title.GetComponent<Ease>().alignmentY = 14f;
         description.GetComponent<Ease>().alignmentY = 13f;
         inputField.GetComponent<Ease>().alignmentY = -300f;
+        Cipy.GetComponent<Ease>().alignmentX = -8f;
         StartCoroutine(LoadDelay(0.5f));
     }
 

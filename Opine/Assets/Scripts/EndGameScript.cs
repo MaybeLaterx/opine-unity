@@ -7,7 +7,7 @@ public class EndGameScript : MonoBehaviour
 
     [SerializeField] private string nextLevel;
     Ease scr;
-    GameObject myScore, opponentScore, outcomeText;
+    GameObject myScore, opponentScore, outcomeText, cipy;
 
     // Use this for initialization
     void Start()
@@ -21,6 +21,9 @@ public class EndGameScript : MonoBehaviour
         opponentScore = GameObject.FindGameObjectWithTag("OpponentScore");
         opponentScore.GetComponent<Ease>().alignmentY = 0f;
 
+        cipy = GameObject.FindGameObjectWithTag("Cipy");
+        cipy.GetComponent<EaseAlpha>().alpha = 0.3f; 
+
         outcomeText = GameObject.FindGameObjectWithTag("Title");
         string newText;
         if (FetchFullGameTopics.myScore > FetchFullGameTopics.opponentScore) newText = "YOU WIN!";
@@ -29,6 +32,7 @@ public class EndGameScript : MonoBehaviour
 
         outcomeText.GetComponent<TextMesh>().text = newText;
         outcomeText.GetComponent<Ease>().alignmentY = 6f;
+        
     }
 
     private void OnMouseUp()
@@ -37,6 +41,7 @@ public class EndGameScript : MonoBehaviour
         myScore.GetComponent<Ease>().alignmentX = -12f;
         opponentScore.GetComponent<Ease>().alignmentX = 12f;
         outcomeText.GetComponent<Ease>().alignmentY = 16f;
+        cipy.GetComponent<EaseAlpha>().alpha = 0f;
         StartCoroutine(LevelLoad(0.5f));
 
 

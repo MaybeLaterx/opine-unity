@@ -392,7 +392,7 @@ Prefab:
     - target: {fileID: 114759086663405302, guid: 17faa1f58a515f643aa44d903deb3170,
         type: 2}
       propertyPath: roundDuration
-      value: 20
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 114759086663405302, guid: 17faa1f58a515f643aa44d903deb3170,
         type: 2}

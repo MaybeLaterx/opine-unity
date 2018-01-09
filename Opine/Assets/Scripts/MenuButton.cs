@@ -16,8 +16,14 @@ public class MenuButton : MonoBehaviour {
 
     private void OnMouseUp()
     {
-        scr.alignmentX = 12f;
-        StartCoroutine(LevelLoad(0.5f));
+        if (nextLevel != "") {
+            foreach (GameObject button in GameObject.FindGameObjectsWithTag("MenuButton"))
+            {
+                button.GetComponent<Ease>().alignmentX = 12f;
+            }
+            StartCoroutine(LevelLoad(0.5f));
+        }
+        
     }
 
     IEnumerator LevelLoad(float delay)

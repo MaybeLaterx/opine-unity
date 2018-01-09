@@ -28,6 +28,8 @@ TagManager:
   - OpponentScore
   - OpponentScoreText
   - InputField
+  - MenuButton
+  - Cipy
   layers:
   - Default
   - TransparentFX

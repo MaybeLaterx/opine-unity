@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using SimpleJSON;
 
 public class TimeScript : MonoBehaviour {
 
@@ -13,15 +14,40 @@ public class TimeScript : MonoBehaviour {
     public Sprite redRing;
     public Transform controller;
     bool ended;
-    string levelName; 
+    string levelName;
+
+    float timePerQuestion; 
 
 	// Use this for initialization
 	void Start () {
+        levelName = SceneManager.GetActiveScene().name;
+        string jsonString = (levelName == "S_VotingTime" ? FetchFullGameTopics.wwwV.text : FetchFullGameTopics.www.text);
+        JSONNode json = JSON.Parse(jsonString);
+
+        int round = FetchFullGameTopics.round;
+        if (levelName == "S_VotingTime")
+        {
+            round--;
+            print("Round on time script = " + round);
+            
+        }
+
+        switch (levelName)
+        {
+            case "S_YayOrNay": timePerQuestion = 5f; break;
+            case "S_TopDog": timePerQuestion = 7f; break;
+            case "S_PeckingOrder": timePerQuestion = 10f; break;
+            case "S_PinpointOpinion": timePerQuestion = 5f; break;
+            case "S_VotingTime": timePerQuestion = 7f; break;
+            default: print("Time up level error"); break;
+        }
+        int totalQuestions = (levelName == "S_VotingTime" ? json["data"]["topics"][round].Count : json["data"][round].Count);
+        roundDuration = (float) totalQuestions * timePerQuestion; 
+
         image = GetComponent<Image>();
         startTime = Time.time; 
         endTime = Time.time + roundDuration;
 
-        levelName = SceneManager.GetActiveScene().name;
 
         GetComponent<Ease>().alignmentX = -35; 
     }

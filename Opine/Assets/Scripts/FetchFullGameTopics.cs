@@ -10,9 +10,6 @@ public class FetchFullGameTopics : MonoBehaviour
 
     public static bool versus;
 
-    string postTopicsUrl = "http://104.131.63.157:3000/getTopicsAndAnswers"; //"http://192.168.1.111:3000/getTopicsAndAnswers";
-    string postOpinionsUrl = "http://104.131.63.157:3000/getVoteTopics"; //"http://192.168.1.111:3000/getVoteTopics"; 
-
     public static JSONNode N;
     public static WWW www;
 
@@ -57,10 +54,11 @@ public class FetchFullGameTopics : MonoBehaviour
     {
         print("Retrieving JSON topics for opinion voting");
 
+        string postOpinionsUrl = GlobalScript.domain + "/getVoteTopics"; 
         string jsonData = "{\"uuid\": \"" + GlobalScript.uuid + "\", \"topicBlockLength\": 3, \"topicBlocks\": 4}"; //length should be 5
         Hashtable headers = new Hashtable();
         headers.Add("Content-Type", "application/json");
-        headers.Add("Cookie", "Our session cookie");
+        headers.Add("accept-version", GlobalScript.apiVersion);
         byte[] pData = System.Text.Encoding.UTF8.GetBytes(jsonData.ToCharArray());
         wwwV = new WWW(postOpinionsUrl, pData, headers);
 
@@ -76,11 +74,12 @@ public class FetchFullGameTopics : MonoBehaviour
         
         print("Retrieving JSON topics for all games");
 
+        string postTopicsUrl = GlobalScript.domain + "/getTopicsAndAnswers";
         string jsonData = "{ \"rounds\": [{\"batches\":3,\"size\":1},{\"batches\":1,\"size\":2},{\"batches\":1,\"size\":4},{\"batches\":1,\"size\":1}]}";
         //string jsonData = "{ \"rounds\": [{\"batches\":10,\"size\":1},{\"batches\":10,\"size\":2},{\"batches\":3,\"size\":4},{\"batches\":5,\"size\":1}]}";
         Hashtable headers = new Hashtable();
         headers.Add("Content-Type", "application/json");
-        headers.Add("Cookie", "Our session cookie");
+        headers.Add("accept-version", GlobalScript.apiVersion);
         byte[] pData = System.Text.Encoding.UTF8.GetBytes(jsonData.ToCharArray());
         www = new WWW(postTopicsUrl, pData, headers);
 

@@ -44,7 +44,7 @@ public class GraphPresent : MonoBehaviour {
         // Lerp to new size
         if (!holdAtStartingValue)
         {
-            ratio = Mathf.Lerp(ratio, rating, speed);
+            ratio = Mathf.Clamp01(Mathf.Lerp(ratio, rating, speed));
             //ratio += addition;
             //print("adding!");
         }

@@ -7,7 +7,7 @@ public class Ease : MonoBehaviour {
     float lerpRatio = 0.15f;
     public float alignmentX, alignmentY, alignmentZ, scaleX, scaleY, scaleZ;
     public bool isUI = false;
-    RectTransform myTransform; 
+    RectTransform myTransform;
 
     // Use this for initialization
     void Awake () {
@@ -46,6 +46,7 @@ public class Ease : MonoBehaviour {
             (scaleX == Mathf.Infinity) ? transform.localScale.x : Mathf.Lerp(transform.localScale.x, scaleX, lerpRatio),
             (scaleY == Mathf.Infinity) ? transform.localScale.y : Mathf.Lerp(transform.localScale.y, scaleY, lerpRatio),
             (scaleZ == Mathf.Infinity) ? transform.localScale.z : Mathf.Lerp(transform.localScale.z, scaleZ, lerpRatio));
+
 
     }
 }

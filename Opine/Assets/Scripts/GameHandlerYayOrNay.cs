@@ -23,7 +23,7 @@ public class GameHandlerYayOrNay : MonoBehaviour {
     public Transform indicator;
     public int totalBatches;
 
-    public Transform timer; 
+    public Transform timer;
 
     GameObject title, description;
     GameObject[] buttons; 

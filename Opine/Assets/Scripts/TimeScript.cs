@@ -21,7 +21,7 @@ public class TimeScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         levelName = SceneManager.GetActiveScene().name;
-        string jsonString = (levelName == "S_VotingTime" ? FetchFullGameTopics.wwwV.text : FetchFullGameTopics.www.text);
+        string jsonString = (levelName == "S_VotingTime" ? FetchFullGameTopics.wwwVText : FetchFullGameTopics.wwwText);
         JSONNode json = JSON.Parse(jsonString);
 
         int round = FetchFullGameTopics.round;

@@ -12,6 +12,15 @@ EditorBuildSettings:
     path: Assets/Scenes/S_Menu.unity
     guid: 920b7af0bb1673c4ca7f63b4a5a72b74
   - enabled: 1
+    path: Assets/Scenes/S_MenuFriend.unity
+    guid: 97eb3c0728f217a45800c2434da979ae
+  - enabled: 1
+    path: Assets/Scenes/S_CreateGame.unity
+    guid: aa834e8218995b84f85b065b57423e24
+  - enabled: 1
+    path: Assets/Scenes/S_JoinGame.unity
+    guid: 5cae3aacaad8b4f40aa263ae520ae7f2
+  - enabled: 1
     path: Assets/Scenes/S_FetchData.unity
     guid: 7b1fcea803fad674db1e378b309153c8
   - enabled: 1

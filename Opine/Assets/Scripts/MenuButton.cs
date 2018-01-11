@@ -5,6 +5,7 @@ using UnityEngine;
 public class MenuButton : MonoBehaviour {
 
     [SerializeField] private string nextLevel;
+    [SerializeField] private bool exitRight = true; 
     Ease scr;
 
     // Use this for initialization

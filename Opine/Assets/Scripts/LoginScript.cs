@@ -23,10 +23,8 @@ public class LoginScript : MonoBehaviour {
         print("Retrieving UUID from server (or creating one)");
 
         string getUuidUrl = GlobalScript.domain + "/users/login";
-        string jsonData = "{\"username\": \"" + username + "\"}"; 
-        Hashtable headers = new Hashtable();
-        headers.Add("Content-Type", "application/json");
-        //headers.Add("accept-version", GlobalScript.apiVersion);
+        string jsonData = "{\"username\": \"" + username + "\"}";
+        Hashtable headers = UtilitiesScript.CreateHeaders();
         byte[] pData = System.Text.Encoding.UTF8.GetBytes(jsonData.ToCharArray());
         WWW www = new WWW(getUuidUrl, pData, headers);
 
@@ -45,7 +43,7 @@ public class LoginScript : MonoBehaviour {
         title.GetComponent<Ease>().alignmentY = 14f;
         description.GetComponent<Ease>().alignmentY = 13f;
         inputField.GetComponent<Ease>().alignmentY = -300f;
-        Cipy.GetComponent<Ease>().alignmentX = -8f;
+        Cipy.GetComponent<Ease>().alignmentX = -12f;
         StartCoroutine(LoadDelay(0.5f));
     }
 
